@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fasal VIMAAN - Interactive Proposal</title>
+    <title>Fasal VIMAAN - Enhanced Interactive Proposal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Earthy Harmony -->
-    <!-- Application Structure Plan: The SPA is designed as a narrative journey. It starts with the core problem, introduces Fasal VIMAAN as the solution, and then dives into specific, interactive sections: 'How It Works' (a step-by-step process flow), 'Key Features' (a card-based exploration), 'The Ecosystem' (a visual chart of stakeholders), and 'Projected Impact' (an interactive chart). This thematic structure is more engaging than the report's linear format, allowing users to explore the concepts in a logical, story-driven way that enhances understanding and retention. -->
-    <!-- Visualization & Content Choices: 1. Process Flow: Report Info: 8-step process. Goal: Organize/Inform. Viz: Interactive numbered diagram using HTML/CSS/JS. Interaction: Clicking a step reveals details. Justification: Visually simplifies a complex process, making it digestible. Library: Vanilla JS. 2. Stakeholder Ecosystem: Report Info: Target Audience section. Goal: Relationships. Viz: Donut Chart. Interaction: Hovering over segments shows stakeholder details. Justification: Clearly shows the central role of the farmer and the interconnectedness of all parties. Library: Chart.js. 3. Impact Visualization: Report Info: Vision/Impact section. Goal: Inform/Compare. Viz: Interactive Bar Chart. Interaction: Buttons to switch between different impact metrics (e.g., Income Increase, Middlemen Reduction). Justification: Makes the potential impact tangible and quantifiable for the user. Library: Chart.js. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Earth -->
+    <!-- Application Structure Plan: The new structure is a more detailed, narrative-driven single-page experience. It begins with an expanded problem statement to build context, followed by a revamped, step-by-step 'Proposed Process' section that combines a visual list with dynamic content. The 'Unique Features' section is now a more interactive grid of detailed cards. A new 'Stakeholder Ecosystem' section visually breaks down the target audience and supporting roles, complementing the existing chart. The final 'Projected Impact' section is now more robust, integrating the vision with interactive data visualizations. This design prioritizes content depth and user engagement, guiding the user through the proposal's logic and value proposition in a highly digestible format. -->
+    <!-- Visualization & Content Choices: 1. Process Flow: Report Info: 8-step process. Goal: Organize/Inform. Viz: An interactive, vertical list with dynamic content pane. Interaction: Clicking a step highlights it and updates a text box with its full details from the PDF. Justification: Clearly presents the sequential flow without clutter, allowing for deep dives into each step. Library: Vanilla JS. 2. Unique Features: Report Info: Features list. Goal: Inform/Organize. Viz: Grid of detailed cards. Interaction: Hover effects to indicate interactivity. Justification: Categorizes and presents dense information in a scannable and visually appealing format. Library: Tailwind CSS. 3. Stakeholder Ecosystem: Report Info: Target Audience details. Goal: Relationships/Inform. Viz: Pie chart with accompanying text blocks. Interaction: The chart and text provide context, showing the interconnectedness. Justification: The chart provides a high-level visual overview while the text ensures all detailed roles from the PDF are included and clearly explained. Library: Chart.js. 4. Projected Impact: Report Info: Vision/Impact section. Goal: Inform/Compare. Viz: Interactive Bar/Pie Charts. Interaction: Buttons to switch between different impact metrics. Justification: Allows the user to interactively explore the key quantitative and qualitative outcomes, making the vision feel tangible. Library: Chart.js. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
@@ -23,8 +23,7 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            height: 300px;
-            max-height: 400px;
+            height: 350px;
         }
         @media (min-width: 768px) {
             .chart-container {
@@ -32,20 +31,22 @@
             }
         }
         .step-item.active {
-            background-color: #38a169; /* green-600 */
+            background-color: #38a169;
             color: white;
-            transform: scale(1.05);
+            transform: scale(1.02);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         .step-item {
             transition: all 0.3s ease-in-out;
         }
         .nav-link.active {
             border-bottom: 2px solid #38a169;
-            color: #276749; /* green-800 */
+            color: #276749;
+            font-weight: 600;
         }
     </style>
 </head>
-<body class="bg-[#FDFBF7] text-[#3a3a3a]">
+<body class="bg-gray-50 text-gray-800">
 
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -56,6 +57,7 @@
                 <a href="#features" class="nav-link text-gray-600 hover:text-[#38a169] transition-colors duration-300">Features</a>
                 <a href="#ecosystem" class="nav-link text-gray-600 hover:text-[#38a169] transition-colors duration-300">Ecosystem</a>
                 <a href="#impact" class="nav-link text-gray-600 hover:text-[#38a169] transition-colors duration-300">Impact</a>
+                <a href="#krishi-sarthi" class="nav-link text-gray-600 hover:text-[#38a169] transition-colors duration-300">Krishi Sarthi</a>
             </div>
             <button id="mobile-menu-button" class="md:hidden text-gray-600">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
@@ -67,29 +69,33 @@
              <a href="#features" class="block nav-link text-gray-600 hover:text-[#38a169]">Features</a>
              <a href="#ecosystem" class="block nav-link text-gray-600 hover:text-[#38a169]">Ecosystem</a>
              <a href="#impact" class="block nav-link text-gray-600 hover:text-[#38a169]">Impact</a>
+             <a href="#krishi-sarthi" class="block nav-link text-gray-600 hover:text-[#38a169]">Krishi Sarthi</a>
         </div>
     </header>
 
     <main class="container mx-auto px-6 py-12">
-        <section id="introduction" class="text-center min-h-[60vh] flex flex-col justify-center items-center">
-            <h2 class="text-4xl md:text-6xl font-bold text-[#2C5234] mb-4">Empowering India's Farmers</h2>
-            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-                Fasal VIMAAN is a digital one-stop platform designed to connect farmers directly to markets, provide quality inputs, and ensure fair prices, transforming agriculture into a more profitable and sustainable venture.
+        <section id="introduction" class="text-center min-h-[70vh] flex flex-col justify-center items-center py-16">
+            <h2 class="text-4xl md:text-6xl font-bold text-[#2C5234] mb-6">Fasal VIMAAN: Empowering India's Farmers</h2>
+            <p class="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                Agriculture is the backbone of India, yet millions of small and marginal farmers face challenges such as middlemen exploitation, unfair pricing, lack of direct market access, and limited access to quality inputs. Fasal VIMAAN is an idea-stage agri-tech platform designed to transform this reality by providing a digital one-stop solution for a more profitable and sustainable future.
+            </p>
+            <p class="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed mt-4">
+                Our platform aims to be a trusted digital partner where farmers can sell crops collectively, buy trusted seeds and fertilizers, access logistics, receive secure payments, and gain knowledge about profitable farming—all in one place.
             </p>
         </section>
 
         <section id="process" class="py-16">
             <div class="text-center mb-12">
-                <h3 class="text-3xl font-bold text-[#2C5234]">How It Works</h3>
-                <p class="text-gray-600 mt-2 max-w-2xl mx-auto">A seamless, technology-driven process connects farmers to buyers and resources. Click on each step to learn more about our transparent and efficient workflow.</p>
+                <h3 class="text-3xl font-bold text-[#2C5234]">Proposed Process: How It Works</h3>
+                <p class="text-gray-600 mt-2 max-w-3xl mx-auto">A seamless, technology-driven process connects farmers to buyers and resources. Click on each step to learn more about our transparent and efficient workflow.</p>
             </div>
-            <div class="flex flex-col md:flex-row">
+            <div class="flex flex-col md:flex-row items-start">
                 <div class="w-full md:w-1/3 mb-8 md:mb-0">
                     <div id="steps-list" class="space-y-4">
                     </div>
                 </div>
                 <div class="w-full md:w-2/3 md:pl-12">
-                    <div id="step-details" class="bg-white p-8 rounded-lg shadow-lg min-h-[300px] flex flex-col justify-center">
+                    <div id="step-details" class="bg-white p-8 rounded-lg shadow-lg min-h-[300px] flex flex-col justify-center border-l-4 border-[#38a169] transition-all duration-500">
                         <h4 id="step-title" class="text-2xl font-bold text-[#38a169] mb-4"></h4>
                         <p id="step-description" class="text-gray-700"></p>
                     </div>
@@ -100,41 +106,78 @@
         <section id="features" class="py-16 bg-white rounded-lg shadow-inner">
              <div class="text-center mb-12">
                 <h3 class="text-3xl font-bold text-[#2C5234]">Unique Features</h3>
-                <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Fasal VIMAAN is more than a marketplace. It's a complete ecosystem with features designed to support farmers at every stage.</p>
+                <p class="text-gray-600 mt-2 max-w-3xl mx-auto">Fasal VIMAAN is more than a marketplace. It's a complete ecosystem with features designed to support farmers at every stage of their work.</p>
             </div>
-            <div id="features-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div id="features-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             </div>
         </section>
         
         <section id="ecosystem" class="py-16">
             <div class="text-center mb-12">
                 <h3 class="text-3xl font-bold text-[#2C5234]">The Fasal VIMAAN Ecosystem</h3>
-                <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Our platform thrives on a hybrid B2B, B2C, and B2F model, placing farmers at the center of a network of buyers, suppliers, and support services. This chart illustrates the key stakeholders who make our ecosystem work.</p>
+                <p class="text-gray-600 mt-2 max-w-3xl mx-auto">Our platform thrives on a hybrid B2B, B2C, and B2F model, placing farmers at the center of a network of buyers, suppliers, and support services. This chart illustrates the key stakeholders who make our ecosystem work, followed by a detailed breakdown of each role.</p>
             </div>
             <div class="chart-container">
                 <canvas id="ecosystemChart"></canvas>
+            </div>
+            <div id="stakeholder-details" class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="text-xl font-bold text-[#2C5234] mb-2">Primary Users</h4>
+                    <p class="text-gray-600">The core beneficiaries are small and marginal farmers who produce organic, conventional, or high-income crops. They are the central focus of our platform.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="text-xl font-bold text-[#2C5234] mb-2">Customers</h4>
+                    <p class="text-gray-600">Our customers include Businesses and Institutions like food processing companies, exporters, and retail chains, as well as Individual Buyers, such as urban consumers seeking organic and quality produce.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h4 class="text-xl font-bold text-[#2C5234] mb-2">Supporting Stakeholders</h4>
+                    <p class="text-gray-600">The ecosystem is supported by a network of partners including Krishi Sarthi (local coordinators), Agri-Input Suppliers, Logistics Partners, and Financial Institutions that handle payments and escrow services.</p>
+                </div>
             </div>
         </section>
 
         <section id="impact" class="py-16 bg-white rounded-lg shadow-inner">
             <div class="text-center mb-12">
-                <h3 class="text-3xl font-bold text-[#2C5234]">Projected Impact</h3>
-                <p class="text-gray-600 mt-2 max-w-2xl mx-auto">By streamlining the agricultural supply chain, Fasal VIMAAN aims to deliver significant, measurable benefits to farmers and the rural economy. Explore the potential impact through the interactive chart below.</p>
+                <h3 class="text-3xl font-bold text-[#2C5234]">Projected Impact & Vision</h3>
+                <p class="text-gray-600 mt-2 max-w-3xl mx-auto">By streamlining the agricultural supply chain, Fasal VIMAAN aims to deliver significant, measurable benefits to farmers and the rural economy. Explore the potential impact through the interactive chart below.</p>
             </div>
-             <div class="flex justify-center mb-8 space-x-4">
-                <button class="impact-button bg-[#38a169] text-white px-4 py-2 rounded-md shadow-md hover:bg-[#2f855a] transition-colors" data-metric="income">Increased Income</button>
-                <button class="impact-button bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-md hover:bg-gray-300 transition-colors" data-metric="exploitation">Reduced Exploitation</button>
-                <button class="impact-button bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-md hover:bg-gray-300 transition-colors" data-metric="sustainability">Sustainable Practices</button>
+             <div class="flex justify-center mb-8 flex-wrap gap-4">
+                <button class="impact-button bg-[#38a169] text-white px-6 py-3 rounded-full shadow-md hover:bg-[#2f855a] transition-colors" data-metric="income">Increased Income</button>
+                <button class="impact-button bg-gray-200 text-gray-700 px-6 py-3 rounded-full shadow-md hover:bg-gray-300 transition-colors" data-metric="exploitation">Reduced Exploitation</button>
+                <button class="impact-button bg-gray-200 text-gray-700 px-6 py-3 rounded-full shadow-md hover:bg-gray-300 transition-colors" data-metric="sustainability">Sustainable Practices</button>
             </div>
-            <div class="chart-container h-96 md:h-[500px]">
+            <div class="chart-container">
                 <canvas id="impactChart"></canvas>
             </div>
+            <div class="mt-12 text-center max-w-4xl mx-auto">
+                <p class="text-lg font-semibold text-gray-700">Fasal VIMAAN is not just a marketplace, but a farmer's trusted digital partner. It brings crops, buyers, inputs, logistics, payments, and knowledge together in one powerful ecosystem. Our vision is to uplift rural India by making agriculture future-ready, technology-driven, and globally connected, solving real agricultural problems and empowering millions of farmers across India.</p>
+            </div>
         </section>
+
+        <section id="krishi-sarthi" class="py-16 bg-white rounded-lg shadow-inner">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-[#2C5234]">AI-Powered Krishi Sarthi ✨</h3>
+                <p class="text-gray-600 mt-2 max-w-3xl mx-auto">Get instant agricultural advice on crops, farming practices, or high-income opportunities by chatting with our AI-powered expert.</p>
+            </div>
+            <div class="max-w-3xl mx-auto bg-gray-100 p-8 rounded-lg shadow-md border-t-4 border-[#38a169]">
+                <div id="chat-box" class="bg-white p-6 rounded-lg shadow-inner min-h-[200px] mb-6 overflow-y-auto max-h-[400px]">
+                    <p class="text-gray-500 italic">"How can I help you today? Feel free to ask me anything about farming."</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <textarea id="user-input" class="flex-grow p-3 rounded-md border-2 border-gray-300 focus:outline-none focus:border-[#38a169] resize-none" rows="2" placeholder="Ask about crop diseases, best fertilizers for a specific crop, or government schemes..."></textarea>
+                    <button id="send-button" class="bg-[#38a169] text-white px-6 py-3 rounded-md shadow-lg hover:bg-[#2f855a] transition-colors duration-300 flex items-center justify-center">
+                        <svg id="send-icon" class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                        <span id="button-text">Ask Krishi Sarthi</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <footer class="bg-gray-800 text-white py-8">
+    <footer class="bg-gray-800 text-gray-200 py-8">
         <div class="container mx-auto px-6 text-center">
-            <p>&copy; 2025 Fasal VIMAAN. A vision for a prosperous agricultural future in India.</p>
+            <p>&copy; 2025 Fasal VIMAAN. All rights reserved.</p>
         </div>
     </footer>
 
@@ -142,24 +185,25 @@
         document.addEventListener('DOMContentLoaded', function () {
             
             const processData = [
-                { title: 'Farmer Onboarding', description: 'Farmers register using Aadhaar/OTP verification and list their crops, specifying if they are organic, post-harvest, or pre-harvest.' },
-                { title: 'Buyer Onboarding', description: 'Verified companies, exporters, government organizations, and individuals post their specific crop requirements on the platform.' },
-                { title: 'Smart Matching', description: 'Our intelligent algorithm groups farmers by crop type and location, automatically connecting them with the most suitable buyers.' },
-                { title: 'Input Marketplace', description: 'Farmers gain access to a marketplace of trusted and verified seeds, fertilizers, and tools from approved suppliers.' },
-                { title: 'Krishi Sarthi Support', description: 'Local coordinators (Krishi Sarthis) provide on-ground support, verifying crop quality, assisting in weighing, and guiding farmers.' },
-                { title: 'Secure Payment System', description: 'Buyers pay in two stages (e.g., 20-30% upfront) via a secure escrow account, ensuring trust and financial security for farmers.' },
-                { title: 'Logistics Integration', description: 'Transport partners are automatically assigned for each deal, with logistics costs covered by the buyers for hassle-free delivery.' },
-                { title: 'Awareness & Training', description: 'A dedicated learning hub offers training videos, crop advisories, and information on high-income crops and government schemes.' }
+                { title: '1. Farmer Onboarding', description: 'Farmers register using Aadhaar/OTP-based verification and list their crops, specifying if they are organic, post-harvest, or pre-harvest.' },
+                { title: '2. Buyer Onboarding', description: 'Verified companies, exporters, government organizations, or individuals post their specific crop requirements on the platform.' },
+                { title: '3. Smart Matching', description: 'Our intelligent algorithm groups farmers by crop and location, automatically connecting them to the most suitable buyers.' },
+                { title: '4. Input Marketplace', description: 'Farmers gain access to a marketplace of trusted and verified seeds, fertilizers, and tools from approved suppliers.' },
+                { title: '5. Krishi Sarthi Support', description: 'Local coordinators (Krishi Sarthis) provide on-ground support, verifying crop quality, assisting in weighing, and guiding farmers through the process.' },
+                { title: '6. Secure Payment System', description: 'Buyers pay in two stages (e.g., 20-30% upfront) via a secure escrow account for secure and transparent transactions.' },
+                { title: '7. Logistics Integration', description: 'Transport partners are automatically assigned for each deal, with logistics costs covered by the buyers for a hassle-free delivery.' },
+                { title: '8. Awareness & Training', description: 'A dedicated learning hub offers training videos, crop advisory, information on high-income crop opportunities, and government schemes.' }
             ];
 
             const featuresData = [
-                { icon: '👥', title: 'Farmer & Buyer Panels', description: 'Dedicated dashboards for crop listing, sales tracking, demand posting, and secure purchases.' },
-                { icon: '🛒', title: 'Input Store', description: 'A one-stop-shop for verified seeds, fertilizers, and essential farming supplies.' },
-                { icon: '🤝', title: 'Krishi Sarthi Role', description: 'Human support on the ground for quality checks, guidance, and building trust within the community.' },
-                { icon: '🔒', title: 'Secure Escrow Payments', description: 'A two-stage payment system with an upfront commitment to protect farmers\' financial interests.' },
-                { icon: '�', title: 'Logistics Automation', description: 'Integrated transport services are auto-assigned, simplifying the delivery process from farm to buyer.' },
-                { icon: '📚', title: 'Learning Hub', description: 'Access to training on organic farming, waste-to-wealth, and high-value crops to boost profitability.' },
-                { icon: '🌱', title: 'Sustainability Focus', description: 'Integration of carbon farming, waste utilization, and eco-friendly practices for a greener future.' }
+                { icon: '👨‍🌾', title: 'Farmer Panel', description: 'A dedicated dashboard for crop listing, sales tracking, and income visibility, empowering farmers with real-time data.' },
+                { icon: '🏢', title: 'Buyer Panel', description: 'A portal for demand posting, negotiation, and making secure, transparent purchases from verified farmers.' },
+                { icon: '🛒', title: 'Input Store', description: 'A one-stop-shop providing access to a wide range of verified seeds, fertilizers, and farming supplies, ensuring quality.' },
+                { icon: '🤝', title: 'Krishi Sarthi Role', description: 'A crucial human element providing on-ground support for quality checks, farmer guidance, and building trust within the community.' },
+                { icon: '�', title: 'Secure Payments', description: 'An escrow-based system with a partial upfront commitment, ensuring financial security and trust for both farmers and buyers.' },
+                { icon: '🚚', title: 'Logistics Automation', description: 'Integrated transport services are auto-assigned for seamless delivery from the farm to the buyer, simplifying the entire supply chain.' },
+                { icon: '📚', title: 'Learning Hub', description: 'Access to valuable training on organic farming, waste-to-wealth practices, and high-value crops like avocado, dragon fruit, and mushrooms.' },
+                { icon: '🌱', title: 'Sustainability Focus', description: 'Integration of carbon farming, agricultural waste utilization, and eco-friendly practices to promote a greener and more profitable future.' }
             ];
             
             const impactChartData = {
@@ -176,7 +220,7 @@
                 exploitation: {
                     labels: ['Middlemen Fees', 'Unfair Pricing', 'Payment Delays'],
                     datasets: [{
-                        label: 'Reduction in Exploitative Factors',
+                        label: 'Reduction in Exploitative Factors (%)',
                         data: [90, 85, 95],
                         backgroundColor: ['#ef4444', '#f97316', '#eab308'],
                         borderColor: ['#dc2626', '#ea580c', '#ca8a04'],
@@ -201,8 +245,8 @@
 
             processData.forEach((step, index) => {
                 const stepItem = document.createElement('div');
-                stepItem.className = 'step-item p-4 rounded-lg cursor-pointer border border-gray-200 bg-gray-50 hover:bg-green-100 transition-all duration-300';
-                stepItem.textContent = `${index + 1}. ${step.title}`;
+                stepItem.className = 'step-item p-4 rounded-lg cursor-pointer border-2 border-transparent bg-white hover:bg-green-50 transition-all duration-300 transform';
+                stepItem.textContent = step.title;
                 stepItem.dataset.index = index;
                 if (index === 0) {
                     stepItem.classList.add('active');
@@ -212,7 +256,7 @@
 
             function updateStepDetails(index) {
                 const step = processData[index];
-                stepTitle.textContent = step.title;
+                stepTitle.textContent = step.title.substring(3).trim();
                 stepDescription.textContent = step.description;
 
                 document.querySelectorAll('.step-item').forEach(item => {
@@ -234,11 +278,11 @@
             const featuresGrid = document.getElementById('features-grid');
             featuresData.forEach(feature => {
                 const featureCard = document.createElement('div');
-                featureCard.className = 'bg-[#FDFBF7] p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300';
+                featureCard.className = 'bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border-t-4 border-[#38a169] transform hover:-translate-y-1';
                 featureCard.innerHTML = `
                     <div class="text-4xl mb-4">${feature.icon}</div>
                     <h4 class="text-xl font-semibold text-[#2C5234] mb-2">${feature.title}</h4>
-                    <p class="text-gray-600">${feature.description}</p>
+                    <p class="text-gray-600 text-sm">${feature.description}</p>
                 `;
                 featuresGrid.appendChild(featureCard);
             });
@@ -247,7 +291,7 @@
             new Chart(ecosystemCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Farmers', 'Buyers (B2B/B2C)', 'Agri-Input Suppliers', 'Logistics Partners', 'Krishi Sarthi', 'Financial Institutions'],
+                    labels: ['Farmers', 'Buyers', 'Agri-Input Suppliers', 'Logistics Partners', 'Krishi Sarthi', 'Financial Institutions'],
                     datasets: [{
                         label: 'Ecosystem Stakeholders',
                         data: [40, 25, 15, 10, 5, 5],
@@ -261,10 +305,17 @@
                     plugins: {
                         legend: {
                             position: 'top',
+                            labels: {
+                                color: '#3a3a3a'
+                            }
                         },
                         title: {
                             display: true,
-                            text: 'Stakeholder Distribution'
+                            text: 'Stakeholder Distribution',
+                            color: '#3a3a3a',
+                            font: {
+                                size: 16
+                            }
                         }
                     }
                 }
@@ -291,6 +342,9 @@
                             legend: {
                                 display: true,
                                 position: 'bottom',
+                                labels: {
+                                    color: '#3a3a3a'
+                                }
                             },
                             title: {
                                 display: true,
@@ -302,7 +356,15 @@
                         },
                         scales: chartType === 'bar' ? {
                             y: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                ticks: {
+                                    color: '#3a3a3a'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#3a3a3a'
+                                }
                             }
                         } : {}
                     }
@@ -369,6 +431,99 @@
                 });
             });
 
+            // --- New Gemini API Integration Section ---
+            const chatBox = document.getElementById('chat-box');
+            const userInput = document.getElementById('user-input');
+            const sendButton = document.getElementById('send-button');
+            const buttonText = document.getElementById('button-text');
+            const apiKey = ""; // Canvas will provide this at runtime
+
+            const showMessage = (message, sender) => {
+                const messageElement = document.createElement('div');
+                messageElement.className = `p-3 rounded-lg max-w-[80%] mb-3 ${sender === 'user' ? 'bg-[#e0e7e0] ml-auto' : 'bg-[#eef2f2] mr-auto'}`;
+                messageElement.textContent = message;
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            };
+
+            const sendMessage = async () => {
+                const userMessage = userInput.value.trim();
+                if (!userMessage) return;
+
+                showMessage(userMessage, 'user');
+                userInput.value = '';
+                
+                sendButton.disabled = true;
+                sendButton.classList.add('opacity-50', 'cursor-not-allowed');
+                buttonText.textContent = 'Thinking...';
+
+                try {
+                    let prompt = `You are an AI assistant designed to act as a helpful "Krishi Sarthi" (Agricultural Expert) for an agri-tech platform called Fasal VIMAAN. Your goal is to provide concise, accurate, and practical advice to farmers. Be friendly and encouraging.
+                    
+User's Question: ${userMessage}`;
+
+                    const payload = {
+                        contents: [{ parts: [{ text: prompt }] }],
+                    };
+                    
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                    // Using exponential backoff for retries
+                    let retries = 0;
+                    const maxRetries = 5;
+                    let response;
+
+                    while (retries < maxRetries) {
+                        try {
+                            response = await fetch(apiUrl, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(payload)
+                            });
+                            if (response.status === 429) { // Too Many Requests
+                                const delay = Math.pow(2, retries) * 1000;
+                                console.warn(`Too Many Requests. Retrying in ${delay / 1000}s...`);
+                                await new Promise(resolve => setTimeout(resolve, delay));
+                                retries++;
+                                continue;
+                            }
+                            break;
+                        } catch (error) {
+                            console.error("Fetch failed:", error);
+                            break;
+                        }
+                    }
+
+                    if (!response || !response.ok) {
+                        throw new Error(`API call failed with status: ${response.status}`);
+                    }
+                    
+                    const result = await response.json();
+                    const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                    if (text) {
+                        showMessage(text, 'ai');
+                    } else {
+                        throw new Error("Invalid API response format or no content.");
+                    }
+                } catch (error) {
+                    console.error("Error fetching AI response:", error);
+                    showMessage("I'm sorry, I couldn't process that request. Please try again.", 'ai');
+                } finally {
+                    sendButton.disabled = false;
+                    sendButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    buttonText.textContent = 'Ask Krishi Sarthi';
+                }
+            };
+            
+            sendButton.addEventListener('click', sendMessage);
+
+            userInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
         });
     </script>
 </body>
